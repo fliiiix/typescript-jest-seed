@@ -1,5 +1,5 @@
 export default class School {  
- private students: Map<string, Array<string>> = new Map();
+ private students = new Map<string, Array<string>>();
 
   classlist() : Map<string, Array<string>> {
       let tmpList = new Map<string, Array<string>>();
@@ -8,21 +8,17 @@ export default class School {
   }
 
   addStudent(name: string, klasse: number) : void {
-      let k = klasse.toString();
-      if(!this.students.has(k)){
-          this.students.set(k, [name]);
-      }
-      else{
-          this.students.get(k).push(name);
-          this.students.get(k).sort();
-      }
+      let students = this.getStudents(klasse);
+      students.push(name);
+      students.sort()
+      this.students.set(klasse.toString(), students);
   }
 
   studentsInClass(klasse: number) : Array<string> {
-      let k = klasse.toString();
-      if (this.students.has(k)){
-          return [...this.students.get(k)];
-      }
-      return [];
+      return [...this.getStudents(klasse)];
+  }
+
+  private getStudents(klasse: number) : Array<string> {
+      return this.students.get(klasse.toString()) || new Array<string>();
   }
 }
